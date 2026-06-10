@@ -114,7 +114,7 @@ Open `agent.ipynb` in PyCharm or VS Code and run all cells. The notebook include
 ### AI Engineer Route
 
 ```text
-Name: Khuzaima
+Name: Faiza
 Education: BS Computer Science
 Interests: Machine Learning, AI agents, LangGraph, automation
 Skills: Python, SQL, basic FastAPI, GitHub

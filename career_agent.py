@@ -271,49 +271,41 @@ Roadmap requirements:
 # -----------------------------
 # Roadmap Evaluator with structured output
 # -----------------------------
+# -----------------------------
+# Roadmap Evaluator with Pydantic Structured Output
+# -----------------------------
 def roadmap_evaluator_node(state: CareerState) -> CareerState:
     llm = get_llm()
 
-    prompt = f"""
-Evaluate this career roadmap for quality.
+    structured_llm = llm.with_structured_output(RoadmapReview)
+
+    result = structured_llm.invoke(
+        f"""
+Evaluate this career roadmap strictly.
 
 Career Path: {state.get('career_path', '')}
 Student Skills: {state.get('skills', '')}
+
 Roadmap:
 {state.get('roadmap', '')}
 
-Return ONLY valid JSON in this format:
-{{
-  "score": 1-10,
-  "good": true/false,
-  "feedback": "short improvement suggestions"
-}}
-
-Rules:
-- Score 8 or above means good = true
-- Roadmap must be practical, structured, beginner-friendly
+Evaluation Rules:
+- Score from 1 to 10
+- Only give 9 or 10 if roadmap is excellent
+- Check if roadmap includes:
+  * Weekly learning plan
+  * Practical projects
+  * Portfolio building
+  * Interview preparation
+  * Realistic beginner progression
+- Give constructive feedback if improvements are needed
 """
-
-    response = llm.invoke(prompt)
-
-    import json
-
-    try:
-        result = json.loads(response.content)
-    except:
-        # fallback if model returns broken JSON
-        return {
-            "quality_score": 5,
-            "feedback": "Model returned invalid format. Try again.",
-            "retry_count": state.get("retry_count", 0) + 1
-        }
+    )
 
     return {
-        "quality_score": result.get("score", 5),
-        "feedback": result.get("feedback", ""),
-        "retry_count": state.get("retry_count", 0) + 1
+        "quality_score": result.score,
+        "feedback": result.feedback,
     }
-
 
 # -----------------------------
 # Final Summary Node
@@ -352,13 +344,23 @@ def route_career(state: CareerState) -> str:
     return "cloud"
 
 
+# -----------------------------
+# Evaluation Routing
+# -----------------------------
 def evaluate_route(state: CareerState) -> str:
     score = int(state.get("quality_score", 0))
     retries = int(state.get("retry_count", 0))
-    if score >= 8:
+
+    print(f"Score: {score}, Attempts: {retries}")
+
+    # Require a stricter score to finish
+    if score >= 9:
         return "final"
+
+    # Stop after max retries
     if retries >= MAX_RETRIES:
         return "final"
+
     return "retry"
 
 

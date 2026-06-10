@@ -1,0 +1,11 @@
+langgraph
+langchain
+langchain-openai
+langchain-community
+duckduckgo-search
+streamlit
+python-dotenv
+pydantic
+grandalf
+notebook
+ipykernel

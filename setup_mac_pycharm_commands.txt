@@ -1,0 +1,37 @@
+# CareerCompass AI - Mac / PyCharm Commands
+
+# 1. Go to your projects folder
+cd ~/Desktop
+
+# 2. Create project folder
+mkdir CareerCompass-AI
+cd CareerCompass-AI
+
+# 3. Open in PyCharm manually or use command if configured
+# charm .
+
+# 4. Create virtual environment
+python3 -m venv venv
+
+# 5. Activate virtual environment
+source venv/bin/activate
+
+# 6. Install packages
+pip install -r requirements.txt
+
+# 7. Create .env file from template
+cp .env.example .env
+
+# 8. Add your API key in .env
+# OPENAI_API_KEY=your_real_openai_api_key_here
+
+# 9. Run Streamlit app
+streamlit run app.py
+
+# 10. GitHub upload commands
+git init
+git add .
+git commit -m "Initial commit - CareerCompass AI"
+git branch -M main
+git remote add origin YOUR_REPO_URL
+git push -u origin main

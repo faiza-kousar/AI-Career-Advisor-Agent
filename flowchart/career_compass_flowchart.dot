@@ -1,0 +1,40 @@
+
+digraph G {
+  graph [rankdir=TB, bgcolor="white", label="CareerCompass AI: Conditional + Iterative LangGraph Workflow", labelloc="t", fontsize=20, fontname="Arial"];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, color="#0f5961", fillcolor="#eaf6f7"];
+  edge [fontname="Arial", fontsize=10, color="#333333"];
+
+  Start [shape=oval, fillcolor="#0f5961", fontcolor="white"];
+  Profile [label="Profile Analyzer\n(Node 1)"];
+  Skill [label="Skill Assessment\n(Node 2)"];
+  Career [label="Career Classifier\nPydantic Output\n(Node 3)", fillcolor="#fff4e6"];
+  AI [label="AI Engineer\nSpecialist Node"];
+  Cyber [label="Cyber Security\nSpecialist Node"];
+  Data [label="Data Scientist\nSpecialist Node"];
+  Web [label="Web Developer\nSpecialist Node"];
+  Cloud [label="Cloud Engineer\nSpecialist Node"];
+  Research [label="Research Tool\nDuckDuckGo Search", fillcolor="#f1f8e9"];
+  Roadmap [label="Roadmap Generator\n12-Week Plan", fillcolor="#e8f1ff"];
+  Evaluate [label="Roadmap Evaluator\nPydantic Score", fillcolor="#fff4e6"];
+  Final [label="Final Summary\nFeedback + Next Steps"];
+  End [shape=oval, fillcolor="#0f5961", fontcolor="white"];
+
+  Start -> Profile;
+  Profile -> Skill;
+  Skill -> Career;
+  Career -> AI [label="AI"];
+  Career -> Cyber [label="Cyber"];
+  Career -> Data [label="Data"];
+  Career -> Web [label="Web"];
+  Career -> Cloud [label="Cloud"];
+  AI -> Research;
+  Cyber -> Research;
+  Data -> Research;
+  Web -> Research;
+  Cloud -> Research;
+  Research -> Roadmap;
+  Roadmap -> Evaluate;
+  Evaluate -> Final [label="score ≥ 8 or max retries"];
+  Evaluate -> Roadmap [label="score < 8 retry", color="#d65f00", fontcolor="#d65f00"];
+  Final -> End;
+}
